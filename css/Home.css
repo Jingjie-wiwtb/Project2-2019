@@ -1,0 +1,538 @@
+a {
+    text-decoration: none;
+}
+a:hover ,button:hover {
+    cursor:pointer;
+}
+
+body {
+    margin:0;
+    padding:0;
+    background-color:black; /*  rgb(7, 37, 79);*/
+
+}
+ul {
+    list-style-type: none;
+}
+.author {
+    text-decoration: underline;
+}
+
+.goods-details a{
+    color: #F9F0DA;
+}
+
+
+.logo {
+
+    width: 100px;
+    height:auto;
+}
+
+
+.nav {
+    position: relative;
+    width:100%;
+    height:500px;
+    font-size:20px;
+    margin:  0 auto;
+}
+.nav_background {
+    position:absolute;
+    z-index:-100;
+    width:100%;
+    height:500px;
+}
+.nav>ul {
+
+    position:relative;
+    z-index:1;
+    list-style-type:none;
+    margin:0;
+    padding:0;
+    border:none;
+    overflow:hidden;
+    background-color:rgba(0,0,0,0.2);
+}
+.nav li {
+
+    float:right;
+}
+
+.logo {
+    position: absolute;
+    top: 9%;
+    left: 30%;
+    width: 400px;
+    height: auto;
+}
+
+.black_pointer {
+    width:100px;
+    min-width:100px;
+    height: 200px;
+    margin:0 auto;
+    display:block;
+}
+
+
+
+#logout_change{
+    display:none;
+}
+
+
+.nav ul li a,.drop-btn{
+    display:inline-block;   /*显示块元素的链接，让整体变为可点击链接区域（不只是文本）*/
+    width:80px;
+    height:30px;      /*表格里的链接决定显示大小*/
+    font-weight:bold;
+    text-align:center;
+    color:white;
+    padding:5px;
+    text-decoration:none;
+   /* float:right;*/
+}
+
+.nav a:hover,.drop-btn:hover {
+    background-color: grey;
+}
+
+.category-content {
+    display:none;
+    position:absolute;
+    text-align:center;
+    z-index:3;
+    background-color:rgba(0,0,0,0.3);
+    width:100px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    padding:0;
+    overflow:hidden;
+}
+.category-content a {
+    display:block;
+    color: white;
+    height:30px;
+    width: 80px;
+    padding: 5px;
+    text-decoration: none;
+}
+
+.category-content a:hover{
+    background-color: grey;
+}
+.drop-btn:hover .category-content{
+    display:block;
+    position:absolute;
+}
+
+.logout_btn {
+    display:none;
+    position:absolute;
+    z-index:2
+}
+
+
+
+
+
+
+
+
+/*
+--------------------搜索框---------------------------
+*/
+.search-bar {
+    min-width:400px;
+    position: relative;
+    margin: 10px 30%;
+    height: 50px;
+    background-image: url(../images/mihail-ribkin-21216-unsplash.jpg);
+    background-size: 75%;
+}
+
+
+.search-bar input {
+    background: transparent;
+    border: none;
+    height: 45px;
+    border-radius: 15px 0 0 15px;
+    padding: 0;
+    margin: 2px 0 0 20px;
+    float: left;
+    width: 70%;
+    color: black;
+}
+
+.search-bar a {
+    display:block;
+    text-align: center;
+    border: none;
+    border-radius: 0 15px 15px 0;
+    height: 44px;
+    width: 25%;
+    padding: 0;
+    margin-top: 10px;
+    float: left;
+    font-size: 20px;
+    background: transparent;
+    color: azure;
+}
+
+.search-bar input:focus {
+    background-color:rgba(254,254,254,0.2);
+}
+
+
+.searching_way {
+    color:white;
+}
+
+
+
+
+/*-
+-
+-----图片轮播-
+-
+*/
+#photo-container {
+    width:900px;
+    height:600px;
+    padding:0;margin:0 auto;
+    overflow:hidden;
+    position:  relative;/*绝对定位，方便子元素的定位*/
+    border-radius: 5px;   /* 圆角框*/
+    z-index:2;
+    top:20px;
+}
+
+#photo li{
+    float:left;
+    width:900px;
+    height:600px;
+    display:inline;
+    overflow:hidden;
+}
+#photo li img{
+    width:900px;
+    height:auto;
+
+}
+#photo {
+    width:3600px;
+    padding:0;
+    animation:switch 16s ease-out infinite;
+}
+
+.photo-intrd {
+    text-align:center;
+    bottom:0;
+    margin:0;
+    padding:0;
+    position:absolute;
+    background-color: rgba(76, 76, 76, 0.5);
+    color:white;
+    height:200px;
+    width:900px;
+}
+
+#photo-container .author {
+    color:white;
+    text-decoration:underline;
+}
+
+
+#frame {
+    height:700px;
+    top:50px;
+}
+
+@keyframes switch{ /*  每张图两个阶段：唯一切换，静置，中间的效果可以任意定制（？）*/
+    0%,20% { margin-left:0;}
+    25%,45% { margin-left:-900px;}
+    50%,70% { margin-left: -1800px}
+    75%,100% { margin-left: -2700px;}
+}
+
+
+#d1:hover #switch{
+    animation-play-state: paused;    /*悬停时暂停动画*/
+}
+
+/*
+---------------------
+ */
+
+.newCard {
+    margin:50px 20px;
+    padding:10px;
+    box-shadow: -7px 6px rgba(255, 255, 255, 0.35), -13px 14px 11px 0 rgba(255, 255, 255, 0.5);
+
+}
+
+
+
+.cartCard {
+
+    width: 90%;
+    min-width: 726px;
+    height: 300px;
+    padding: 20px;
+    margin: 30px auto;
+    background-color: whitesmoke;
+    box-shadow: -6px 8px rgba(255, 255, 255, 0.35), 0 12px 24px 0 rgba(255, 255, 255, 0.5);
+}
+
+
+
+
+/*
+-
+-------------------------------商品详情-----------------------
+ */
+
+.goods-container {
+    font-style: italic;
+
+    border:none;
+    width:90%;
+    margin:50px auto;
+    font-size: 18px;
+    line-height: 1.5;
+    color: #F9F0DA;
+}
+.price{
+    margin:10px 0;
+}
+
+.goods-container button{
+    width:200px;
+    height:40px;
+    padding:10px;
+    margin:0 40px;
+    text-align:center;
+    font-size:16px;
+
+}
+
+.details-img {
+    margin:20px;
+    height:auto;
+
+}
+
+
+.goods-details {
+
+    margin:20px 0;
+
+}
+.goods-details table {
+    margin:10px 0;
+    width:60%;
+
+}
+.goods-details th td{
+    border-collapse:collapse;
+    border: 1px solid black;
+    text-align:center;
+}
+
+
+
+
+/*
+-
+---------------------------------分页----------------------------
+-
+ */
+.page-flickr {
+    width:40%;
+    margin:20px auto;
+}
+.page-flickr li{
+    border:0;margin:0;padding:0;
+    list-style:none;
+    display:inline-block;
+
+}
+.page-flickr li a{
+    background-color: transparent;
+    color: white;
+    float:left;
+    padding:8px 16px;
+    text-decoration:none;
+    border:1px solid antiquewhite;
+    text-align:center;
+}
+.page-flickr li a.current {
+    background-color: antiquewhite;
+    color:black;
+}
+.page-flickr li a:hover:not(.current) {
+    background-color: bisque;
+    color:black;
+}
+
+
+/*-------------------页脚----------------
+ */
+
+.footer{
+    height:180px;
+    display:block;
+    background-color:lightgrey;
+    color:black;
+    width:100%;
+    overflow:hidden;
+    bottom:0;
+    z-index:100;
+}
+
+.nav_footer {
+    list-style-type:none;
+    margin:10px auto;
+    display:inline;
+    text-align:center;
+    width:100%;
+
+}
+.nav_footer>li {
+    display:inline-block;
+    width:300px;
+    margin:0 50px;
+    position:relative;
+}
+.nav_footer ul{
+    margin:0;
+    padding:0;
+}
+.copyright {
+    text-align:center;
+    color:darkgrey;
+    line-height: 12px;
+    font-size:14px;
+}
+
+
+
+
+
+/*-----------------登录窗口------------*/
+
+.pop_back {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index:100;
+}
+
+.pop_content {
+    width: 50%;
+    height:400px;
+    min-width: 400px;
+    z-index: 100;
+    margin: 12% auto;
+    overflow: auto;
+    padding: 0 5px;
+    background-image:url("../images/christian-perner-329584-unsplash.jpg");
+    background-size:100%;
+    color:black;
+    border-radius:5px;
+}
+
+.pop_body {
+    background:#eeeeee;
+    height:300px;
+    margin: 0;
+    padding:0 10%;
+}
+
+
+#login_close-btn,#register_close-btn,#recharge_close-btn {
+    float:right;
+    font-size: 50px;
+    margin:0;padding:0;
+    color: black;
+    cursor: pointer;
+}
+
+.pop_head {
+    padding: 0;margin:0;
+    height:30px;
+    text-align: center;
+}
+
+.pop_content h2 {
+    margin: 15px auto;
+    padding:0;
+    text-align: center;
+}
+
+.pop_content input {
+    min-width:200px;
+    margin:10px auto;
+
+
+}
+
+ label {
+    display:inline-block;
+    width:150px;
+    text-align:right;
+}
+
+ .error {
+    color:red;
+    text-align:left;
+}
+ .success {
+    color:green;
+}
+
+.pop_submit {
+    display:block;
+    margin:30px auto;
+    background-image: url(../images/nav.jpg);
+    background-size: 100%;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    width:100px;
+    height:30px;
+    text-align:center;
+}
+
+
+.code {
+    color:black;
+    font-style:italic;
+    border:0;
+    padding:2px 3px;
+    letter-spacing:3px;
+    font-weight:bolder;
+    text-align:center;
+
+}
+
+.change_vcode {
+    text-decoration: underline;
+}
+
+
+.code {
+    height:50px;
+    width:100px;
+    display:block;
+}
+
+
+
+
+
+

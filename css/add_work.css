@@ -1,0 +1,43 @@
+ h1 {
+    margin: 15px auto;
+    padding: 0;
+    text-align: center;
+}
+
+ .container {
+     background-color: lightgrey;
+     margin:30px;
+ }
+.container form {
+    display: block;
+
+    font-size: 20px;
+    left: 300px;
+    position: relative;
+
+}
+
+input {
+    margin:10px ;
+}
+
+#preview {
+    margin:0 auto;
+}
+
+#preview img {
+    width:700px;
+}
+.submit {
+    margin: 30px auto;
+    background-image: url(../images/nav.jpg);
+    background-size: 100%;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    width: 100px;
+    height: 30px;
+    left: 200px;
+    position: relative;
+
+}

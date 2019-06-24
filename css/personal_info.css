@@ -1,0 +1,78 @@
+.current_nav {
+    position: relative;
+    height: 80px;
+    margin: 0 auto;
+    display: block;
+    width: 70%;
+    left: 5%;
+    top: -220px;
+    min-width: 200px;
+
+}
+
+
+.cart_body {
+    background-image: url(../images/elena-saharova-236504-unsplash.jpg);
+    background-size: 100%;
+    background-position:center;
+}
+
+
+/*个人信息*/
+.userInf table{
+    width:100%;
+}
+.userInf {
+    margin: 50px auto;
+    padding: 20px;
+    top: 50px;
+    left: 0;
+    width: 250px;
+    background-color: rgba(254,254,254,0.9);
+    box-shadow: -6px 8px rgba(255,255,255,0.35), 0 12px 24px 0 rgba(255,255,255,0.5);
+}
+table,td{
+    border-collapse: collapse;
+    border:1px solid black;
+}
+.uploaded td, .sold td,.bought td{
+    padding:5px 10px;
+}
+
+.uploaded, .sold, .bought {
+    text-align: left;
+    left: 350px;
+    background-color: rgba(254,254,254,0.9);
+    margin: 50px auto;
+    padding: 20px;
+    width: 800px;
+    box-shadow: -6px 8px rgba(255, 255, 255, 0.35), 0 12px 24px 0 rgba(255, 255, 255, 0.5);
+}
+
+.uploaded th, .sold th, .bought th{
+    text-align:center;
+    height:30px;
+}
+
+
+.uploaded table, .sold table, .bought table{
+    width:100%;
+
+}
+
+.recharge_btn {
+    display:block;
+    margin:10px auto;
+    background-image: url("../images/nav.jpg");
+    background-size:100%;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    width:120px;
+    height:40px;
+    text-align:center;
+}
+
+.recharge_btn:hover {
+    background: rgba(0,0,0,0.8);
+}

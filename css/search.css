@@ -1,0 +1,71 @@
+
+.result_container li {
+
+}
+
+.result_container li div {
+
+}
+
+
+
+.result_container {
+    display:inline;
+}
+
+
+.resultCard {
+    margin:50px 20px;
+    padding:10px;
+
+    background-color: #F9F0DA;
+    box-shadow: -7px 6px rgba(255, 255, 255, 0.35), -13px 14px 11px 0 rgba(255, 255, 255, 0.5);
+
+}
+.result_container a {
+
+    width:200px;
+    margin:0;
+
+}
+.result_container img {
+    width:200px;
+    float:left;
+
+}
+.result_container button {
+    width:150px;
+    height:30px;
+    margin:5px 20px;
+}
+
+.result_dscpt {
+    position:relative;
+    width:70%;
+    margin-left:230px;
+}
+
+.author {
+    text-decoration: underline;
+    color: #333333;
+}
+.price {
+    font-weight: bold;
+}
+
+label {
+    margin-left:5px;
+}
+
+.searching_way {
+    margin: 5px auto;
+    display: block;
+    top: 10px;
+    left: 20px;
+    color: lightgrey;
+    position: relative;
+}
+
+.searching_way input {
+    color:lightgrey;
+}
