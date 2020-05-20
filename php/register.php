@@ -11,10 +11,12 @@
    
    $sql_select = "SELECT * FROM users WHERE username = '$username'";
    
-   $result = mysqli_query($conn, $sql_select);          
+   $result = mysqli_query($conn, $sql_select);
+
+   $row=mysqli_fetch_array($result);
 
    //用户名已存在
-   if($result) {
+   if($row) {
 
        mysqli_free_result($result);
 	   
@@ -51,7 +53,7 @@
        }
 	   else {
            echo mysqli_error($conn);
-           echo '<script>alert("注册失败！请重试！");</script>';
+           echo '<script>alert("注册失败！请重试！");history.go(-1);</script>';
        }
 	   
    }

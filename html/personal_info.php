@@ -20,20 +20,25 @@ include '../php/browse_history.php';
 
 </head>
 
-<?php include '../php/nav.php';  ?>
+<?php include '../php/nav.php';
+if(!isset($_SESSION['username']))
+    echo "<script>alert('请先登陆！');history.go(-1);</script>";
+
+
+?>
 <?php  //打印足迹
 history_display($history);
 ?>
 
 <!--   搜索框  -->
 
+
 <div class="search-bar">
     <form>
-        <input type="text" placeholder="请输入您要搜索的内容...">
-        <a href="search.html"><i class="fa fa-search"></i>搜索</a>
+        <input type="text" placeholder="   请输入关键词" name="keyword"  id="keyword">
+        <a   class="search_btn"><i class="fa fa-search"></i>搜索</a>
     </form>
 </div>
-
 
 <div class="cart_body">
     <div class="userInf">
@@ -90,45 +95,46 @@ history_display($history);
    include '../php/conn.php';
 
 	
-	//单条上传订单展示
+	//单条上传展示
   function upload_display($artworkID,$imgFileName,$title,$artist,$timeReleased,$price) {
 	
 	    $upload = '<div class="cartCard container " style="height:150px"><div class="row">';
 		$upload.= '<div class="col-md-3"><a href="goods_details.html" class="result_link" data-artworkID="'.$artworkID.'"><img style="height:100px; border-radius:5%" src=" ../resources/img/'.$imgFileName.'"></a></div>';
 		$upload.= '<div class="col-md-5" >';
-		$upload.= '<p class="art-name"><em>名称  '.$title.'</em>  艺术家  '.$artist.'</p>';
-		$upload.= '<p class="price">价格  '.$price.'  修改时间： '.$timeReleased.'</p></div>';
-		$upload.= '<div class="col-md-3"><button type="button" class="btn btn-warning delete_btn">删除</button>';
-        $upload.= '<button type="button" class="btn btn-info editwork_btn">修改</button></div></div></div>';
+		$upload.= '<p class="art-name">名称  '.$title.'</p><p>  艺术家  '.$artist.'</p>';
+		$upload.= '<p class="price">价格  '.$price.'</p><p> 修改时间： '.$timeReleased.'</p></div>';
+		$upload.= '<div class="col-md-3"><form method="GET" action="../php/delete_work.php" onsubmit="return confirm(\'确认删除？\')"><input name="artworkID" value="'.$artworkID.'" style="display:none"/><button type="submit" class="delete_work btn btn-warning">删除</button></form>';
+        $upload.= '<button type="button" class="btn btn-info editwork_btn" data-artworkID="'.$artworkID.'">修改</button></div></div></div>';
 		return $upload;
 	}
 
 
 
-	//单条已购买订单展示
+	//单条订单展示
 function bought_display($artworkID,$imgFileName,$title,$timeCreated,$price){
-	    $bought = '<div class="cartCard" >';
-		$bought.= '<a href="goods_details.html" class="result_link" data-artworkID="'.$artworkID.'"><img  src=" ../resources/img/'.$imgFileName.'"></a>';
-		$bought.= '<div class="dscpt_container" >';
-		$bought.= '<h3 class="art-name">名称'.$title.'</h3>';
-		$bought.= '<p>价格：'.$price.'</div>';
-		$bought.= '<p >修改时间： '.$timeCreated.'</p>';		
+
+	    $bought = '<div class="cartCard container " style="height:150px"><div class="row">';
+		$bought.= '<div class="col-md-3"><a href="goods_details.html" class="result_link" data-artworkID="'.$artworkID.'"><img style="height:100px; border-radius:5%" src=" ../resources/img/'.$imgFileName.'"></a></div>';
+		$bought.= '<div class="col-md-5" >';
+		$bought.= '<p class="art-name">名称'.$title.'</p>';
+		$bought.= '<p>价格：'.$price.'</p>';
+		$bought.= '<p >修改时间： '.$timeCreated.'</p></div></div></div>';
 		return $bought;
 	
 	}
 	
 	//单条卖出订单展示
-function sold_display($artworkID,$imgFileName,$title,$timeCreated,$price,$buyerID,$email,$telephone,$address){
-	    $sold = '<div class="cartCard" >';
-		$sold.= '<a href="goods_details.html" class="result_link" data-artworkID="'.$artworkID.'"><img  src=" ../resources/img/'.$imgFileName.'"></a>';
-		$sold.= '<div class="dscpt_container" >';
-		$sold.= '<h3 class="art-name">名称'.$title.'</h3>';
+function sold_display($artworkID,$imgFileName,$title,$timeCreated,$price,$username,$email,$telephone,$address){
+	    $sold = '<div class="cartCard container " style="height:150px"><div class="row">';
+		$sold.= '<div class="col-md-3"><a href="goods_details.html" class="result_link" data-artworkID="'.$artworkID.'"><img style="height:100px; border-radius:5%" src=" ../resources/img/'.$imgFileName.'"></a>';
+		$sold.= '</div><div class="col-md-4" >';
+		$sold.= '<p class="art-name">名称'.$title.'</p>';
 		$sold.= '<p >卖出时间：'.$timeCreated.'</p>';
-		$sold.= '<p>卖出价格：'.$price.'</p>';
-		$sold.= '<div><h3>购买人信息<?h3><p>用户名'.$buyerID.'</div>';	
+		$sold.= '<p>卖出价格：'.$price.'</p></div>';
+		$sold.= '<div class="col-md-5"><p>购买人：'.$username;
         $sold.= '<p>邮箱：'.$email.'</p>';
     	$sold.= '<p>电话：'.$telephone.'</p>';
-        $sold.= '<p>地址：'.$address.'</p>';		
+        $sold.= '<p>地址：'.$address.'</p></div></div></div>';
 		return $sold;
 
 	}
@@ -140,7 +146,7 @@ function sold_display($artworkID,$imgFileName,$title,$timeCreated,$price,$buyerI
 
 
 <div class="bought">
-    <h3>已购买的艺术品</h3>
+    <h3>我的订单</h3>
 
 <?php
     //function boughtList(){
@@ -149,21 +155,33 @@ function sold_display($artworkID,$imgFileName,$title,$timeCreated,$price,$buyerI
 
     $sql_select = "SELECT * FROM orders WHERE buyerID=$buyerID";  //查找artworks中该user拥有的artwork
     $result = mysqli_query($conn,$sql_select);   //
-
-    if(!$result) {		 //若有结果
-    echo '<div>您的订单为空</div>';
+if(!$result->num_rows){
+  //  if(!$bought_array =mysqli_fetch_array($result)) {		 //若没有结果
+         echo '<div>您的订单为空</div>';
     }
     else {
-    while($bought_array = mysqli_fetch_array($result))   //遍历输出搜索结果
-    {
-    $orderID = $bought_array['orderID'];
+      //  $timeCreated = $bought_array['timeCreated'];
+        while($bought_array =mysqli_fetch_array($result)) //遍历输出搜索结果
+        {
+            $timeCreated = $bought_array['timeCreated'];
+            $orderID = $bought_array['orderID'];
 
-    $sql = "SELECT * FROM artworks WHERE orderID=$orderID";
-    $select = mysqli_query($conn,$sql);
-    $row = mysqli_fetch_array($select);
+            echo '<div class="order">'.'<p>订单号：'.$orderID.'</p>';;
 
-    echo upload_display($row['artworkID'],$row['imageFileName'],$row['title'],$row['timeCreated'],$row['price']);
-    }
+            $sql = "SELECT * FROM artworks WHERE orderID=$orderID";
+            $select = mysqli_query($conn, $sql);
+
+            echo mysqli_error($conn);
+         //   $row = mysqli_fetch_array($select);
+          //  var_dump($row);
+            while($row = mysqli_fetch_array($select)){
+          //      echo $row['artworkID'];
+                echo bought_display($row['artworkID'], $row['imageFileName'], $row['title'], $timeCreated, $row['price']);
+            }
+
+            echo "</div>";
+
+        }
     }
    mysqli_free_result($result);
 ?>
@@ -214,19 +232,26 @@ $sql_select = "SELECT * FROM artworks WHERE ownerID=$ownerID AND orderID IS NOT 
 $result = mysqli_query($conn,$sql_select);
 
 
-if(!$result) {		 //若有结果
-    echo '<div>你还没有上传艺术品</div>';
+if(!$result->num_rows) {		 //若没有结果
+    echo '<div>你还没有卖出艺术品</div>';
 }
 else {
 
     while ($sold_array = mysqli_fetch_array($result)) {
-        $orderID = $sold_array['orderID'];
+       $orderID = $sold_array['orderID'];
 
-        $sql = "SELECT * FROM orders LEFT JOIN users ON users.userID=orders.buyerID WHERE orderID=$orderID";
+        $sql = "SELECT * FROM orders LEFT JOIN users ON users.userID=orders.buyerID WHERE orders.orderID=$orderID";
         $select = mysqli_query($conn, $sql);
+     //   echo $select->num_rows;
         $row = mysqli_fetch_array($select);
+      //  mysqli_free_result($select);
+      //  var_dump($row);
+       // echo $row['buyerID'];
 
-        echo sold_display($row['artworkID'], $row['imgFileName'], $row['title'], $row['timeCreated'], $row['price'], $row['buyerID'], $row['email'], $row['tel'], $row['address']);
+       //var_dump($row);
+      // echo $row['artworkID']. $row['imageFileName'];
+
+        echo sold_display($sold_array['artworkID'], $sold_array['imageFileName'], $sold_array['title'], $row['timeCreated'], $sold_array['price'], $row['username'], $row['email'], $row['tel'], $row['address']);
     }
 }
     ?>
@@ -264,7 +289,13 @@ else {
 
 <div class="uploaded">
         <h3>上传的艺术品</h3>
-        <?php
+    <button type="button" class="btn btn-info upload_btn">上传艺术品</button>;
+
+
+
+
+
+<?php
 
         //function uploadList(){
 
@@ -279,6 +310,7 @@ else {
         else {
             while($upload_array = mysqli_fetch_array($result))   //遍历输出搜索结果
             {
+            //    echo "<script>alert('artist:".$upload_array['artist']."');</script>";
                 echo upload_display($upload_array['artworkID'],$upload_array['imageFileName'],$upload_array['title'],$upload_array['artist'],$upload_array['timeReleased'],$upload_array['price']);
             }
         }
@@ -374,11 +406,22 @@ include '../php/loginout_function.php';
 
     $(".editwork_btn").click(function(){
         let artworkID = $(this).data('artworkid');
-        location.href="addwork.php?artworkID="+artworkID;
+        location.href="add_work.php?artworkID="+artworkID;
 
     });
 
 
 
+
 </script>
+<script>
+
+    $(".upload_btn").click(function () {
+
+        location.href="add_work.php";
+
+    });
+
+</script>
+
 </html>

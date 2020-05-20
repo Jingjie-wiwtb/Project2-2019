@@ -1,5 +1,5 @@
 <?php
-if($_SESSION['username']) {
+if(isset($_SESSION['username'])) {
     ?>
     <script>
         document.getElementById("logout_change").style.display = "block";

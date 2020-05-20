@@ -18,10 +18,12 @@
         $sql_update = "UPDATE artworks SET view = $nview WHERE artworkID = $artworkID";
         $update = mysqli_query($conn,$sql_update);
 
+        //var_dump($row['imageFileName']);
+
         $details = array('artworkID' => $row['artworkID'], 'imageFileName' => $row['imageFileName'], 'title' => $row['title'], 'artist' => $row['artist'], 'description' => $row['description'], 'price' => $row['price'], 'view' => $row['view'], 'genre' => $row['genre'], 'yearOfWork' => $row['yearOfWork'],'orderID'=>$row['orderID']);
-echo $row['orderID'];
+//echo $row['orderID'];
       //  var_dump($details);
-        echo json_encode($details);
+        echo json_encode($details,JSON_UNESCAPED_UNICODE);
 
     }
 	

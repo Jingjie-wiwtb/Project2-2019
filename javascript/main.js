@@ -1,5 +1,37 @@
 
+//弹窗控制
 
+//登陆弹窗
+var login_btn = document.getElementById('login_btn');
+var login_div = document.getElementById('login_pop_back');
+var login_close = document.getElementById('login_close-btn');
+
+login_btn.onclick = function show() {
+    console.log("clicked!");
+    login_div.style.display = "block";
+};
+
+$('#login_close-btn').click(function(){
+    login_div.style.display = "none";
+});
+
+
+//注册弹框
+var register_btn = document.getElementById('register_btn');
+var register_div = document.getElementById('register_pop_back');
+var register_close = document.getElementById('register_close-btn');
+
+
+register_btn.onclick = function show() {
+    register_div.style.display = "block";
+};
+
+$('#register_close-btn').click(function(){
+
+    register_div.style.display = "none";
+});
+
+/*
 //获取搜索结果排序方式
 $("#order_key").change(function(){
     var	order_key = $('input[name=order_key]:checked').val();
@@ -13,9 +45,9 @@ $("#search_key").change(function(){
     console.log("search_key"+search_key);
 
 });
-
+*/
 //搜索关键词传递
-/*
+
 $(".search_btn").click(function(){
 
     var keyword = document.getElementById("keyword").value;
@@ -23,7 +55,7 @@ $(".search_btn").click(function(){
     window.location.href = "search.php?keyword="+keyword;
 
 });
-*/
+
 
 //登出变化
 
@@ -86,58 +118,61 @@ $('.login_submit').click(function () {
 */
 
 
+$(document).on('click','.result_link',function() {
+    let artworkID = $(this).data('artworkid');
+    location.href="goods_details.php?artworkID="+artworkID;
+
+});
 
 
-
+/*
 //商品链接点击事件
 $('.result_link').click(function() {
     let artworkID = $(this).data('artworkid');
     location.href="goods_details.php?artworkID="+artworkID;
 
 });
- 
+
+*/
 
 
+//   on()写法
+$(document).on('click', '.addcart', function() {
+    //function code here.
 
+    var artworkID = $(this).data('artworkid');
+    console.log("artworkID:" + artworkID);
 
- //“加入购物车”点击事件
-$('.addcart').click(function()
-	{
+    //把artworkID传到addcart.php
+    $.ajax({
+        type: "GET",
+        async: false,   //同步   默认是true（异步）
+        url: "../php/addcart.php",
+        data: {
+            artworkID: artworkID
+        },
+        dataType: "TEXT",
+        success: function (data) {
+            console.log(data);
+            if (data=="success") {
+                console.log("success")
+                alert("添加成功！");
+            }
+            if(data=="notlogin"){
+                alert("请先登录！");
+            }
+            if(data=="added") {
+                alert("您已添加该商品！");
+            }
 
-            var artworkID = $(this).data('artworkid');
-            console.log("artworkID:" + artworkID);
-
-            //把artworkID传到addcart.php
-            $.ajax({
-                type: "GET",
-                async: false,   //同步   默认是true（异步）
-                url: "../php/addcart.php",
-                data: {
-                    artworkID: artworkID
-                },
-                dataType: "TEXT",
-                success: function (data) {
-                    console.log(data);
-                    if (data=="success") {
-                        console.log("success")
-                        alert("添加成功！");
-                    }
-                    if(data=="notlogin"){
-                        alert("请先登录！");
-                    }
-                    if(data=="added") {
-                        alert("您已添加该商品！");
-                    }
-
-                    if(data=="bought"){
-                        alert("已经被人买走啦！");
-                    }
+            if(data=="bought"){
+                alert("已经被人买走啦！");
+            }
 
                 }
             });
 
 	});
-
 
 
 
@@ -389,34 +424,3 @@ function register_validate() {
 
 }
 
-
-//弹窗控制
-
-//登陆弹窗
-var login_btn = document.getElementById('login_btn');
-var login_div = document.getElementById('login_pop_back');
-var login_close = document.getElementById('login_close-btn');
-
-login_btn.onclick = function show() {
-    login_div.style.display = "block";
-};
-
-$('#login_close-btn').click(function(){
-    login_div.style.display = "none";
-});
-
-
-//注册弹框
-var register_btn = document.getElementById('register_btn');
-var register_div = document.getElementById('register_pop_back');
-var register_close = document.getElementById('register_close-btn');
-
-
-register_btn.onclick = function show() {
-    register_div.style.display = "block";
-};
-
-$('#register_close-btn').click(function(){
-
-    register_div.style.display = "none";
-});

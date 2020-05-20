@@ -31,11 +31,21 @@ include '../php/browse_history.php';
 </head>
 <body>
 
-<?php include '../php/nav.php';  ?>
+<?php include '../php/nav.php';
+
+if(!isset($_SESSION['username']))
+    echo "<script>alert('请先登陆！');history.go(-1);</script>";
+
+
+?>
 <?php  //打印足迹
 history_display($history);
+
+
 ?>
 <script>
+
+
     console.log(document.cookie);
 </script>
 <!--   搜索框  -->
@@ -105,10 +115,9 @@ history_display($history);
 -->		<!--pj1样例-->
 		
 	<div class="totalPrice">	    
-		<h3 style="color:cornsilk">合计：<?php echo $totalPrice; ?>
+		<h3 style="color:cornsilk">合计：<?php $_SESSION['totalPrice']=$totalPrice; echo $totalPrice; ?>
 		<button class="btn btn-info buy_btn" data-totalPrice=<?php echo '"'.$totalPrice.'"'; ?>>结算</button>
     </div>
-
 
 
 
@@ -142,7 +151,7 @@ history_display($history);
 -----------------------------------------分页--------------------------
 -->
 
-
+<!--
 
 <ul class="page-flickr">
     <li class="pre-page"><a href=""><<</a></li>
@@ -155,51 +164,54 @@ history_display($history);
     <li><a href="">10</a></li>
     <li class="next-page"><a href="">>></a></li>
 </ul>
+-->
 
 
-
-<!-------------注册窗口------------>
-
-<div class="pop_back" id="register_pop_back" >
-    <div id="register_pop_content" class="pop_content">
-        <span id="register_close-btn">×</span>
-        <div class="pop_head">
-            <h2>Welcome to Art Market!</h2>
-        </div>
-        <div class="pop_body">
-            <h2>注册</h2>
-            <form action="#" method="POST">
-                <div>
-                    <label for="username">请设置用户名:</label>
-                    <input type="text" name="username" id="username" placeholder="（不能为纯数字或纯字母" onblur="checkUsername()">
-                    <span class="default" id="errname"></span>
-                </div>
-                <div>
-                    <label for="userpassword">请设置密码:</label>
-                    <input type="password" name="userpassword" id="userpassword" placeholder="（至少6位，注意大小写）" onblur="checkPassword()">
-                    <span class="default" id="errpsw"></span>
-                </div>
-                <div>
-                    <label for="confirm_password">确认密码:</label>
-                    <input type="password" name="confirm_password" id="confirm_password" placeholder="请再次输入密码" onblur="confirmPassword()">
-                    <span class="default" id="errpsw2"></span>
-                </div>
-                <div>
-                    <label for="telephone">请输入手机号码:</label>
-                    <input type="tel" name="telephone" id="telephone" placeholder="手机号码" onblur="checktel()">
-                    <span class="default" id="errtel"></span>
-                </div>
-                <input class="pop_submit" type="submit" value="注册" name="register">
-            </form>
-        </div>
-    </div>
-</div>
 
 </body>
 
 <?php
 include '../php/loginout_function.php';
 ?>
+
+
+
+
+
+<div class="footer">
+    <ul class="nav_footer">
+        <li>
+            <h4>订单服务</h4>
+            <ul>
+                <li>购买指南</li>
+                <li>支付方式</li>
+                <li>送货政策</li>
+            </ul>
+        </li>
+        <li>
+            <h4>关于我们</h4>
+            <ul>
+                <li>公司简介</li>
+                <li>官方微信</li>
+                <li>联系我们</li>
+            </ul>
+        </li>
+        <li>
+            <h4>帮助</h4>
+            <ul>
+                <li>提出建议</li>
+                <li>在线客服</li>
+                <li>技术支持</li>
+            </ul>
+        </li>
+    </ul>
+    <div class="copyright">
+        <p>Created by Jingjie He.   18307130370</p>
+        <p>地址：复旦大学邯郸校区</p>
+    </div>
+</div>
+
+
 
 
 
@@ -221,20 +233,35 @@ include '../php/loginout_function.php';
             dataType:"TEXT",
             success:function(data){
 
+                if(data==1)
+                    alert('订单中有商品已被删除！');
                 console.log(data);
-                if(data){
+                if(data==2)
+                    alert('有商品信息被修改！请查看！');
+                if(data==3)
+                    alert('订单中有商品已被购买！');
+                if(data==0)
+                    alert('余额不足！请先充值');
+                else{
                     console.log(data);
 
                     alert('购买成功！');
 
-                    window.location.href="cart.php";    //刷新购物车
+                   window.location.href="cart.php";    //刷新购物车
                 }
-                else
-                    alert('余额不足！请先充值');
+
             }
         });
     });
 
+
+
+
+    $(document).on('click','.result_link',function() {
+        let artworkID = $(this).data('artworkid');
+        //location.href="goods_details.php?artworkID="+artworkID;
+
+    });
 
 
 

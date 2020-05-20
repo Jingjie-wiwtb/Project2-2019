@@ -6,7 +6,7 @@
         <li><a href="cart.php">购物车</a></li>
         <div id="login_change">
             <li><a id="register_btn">注册</a></li>
-            <li><a id="login_btn" class="btn">登陆</a></li>
+            <li><a id="login_btn" class="">登陆</a></li>
         </div>
         <div id="logout_change">
             <li id="logout_btn"><a  >登出</a></li>
@@ -45,6 +45,8 @@
                     <span class="default" id="errLpsw"></span>
                 </div>
                 <div>
+
+
                     <label for="input_vcode">验证码</label>
                     <input type="text" name="input_vcode" id="input_vcode"  onblur="validate()" placeholder="请输入图中的验证码">
                     <span class="default" id="errVerifycode"></span>

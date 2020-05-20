@@ -28,8 +28,11 @@ else {
         //检查是否重复添加
         $sql_check = "SELECT * FROM carts WHERE userID = $userID AND artworkID = $artworkID ";
         $check_result = mysqli_query($conn,$sql_check);
-        if($check_result)   //该用户已添加
+
+
+        if($row=mysqli_fetch_array($check_result))   //该用户已添加
         {
+   //         echo $row['artworkID']." ".$row['userID'];
             echo "added";
             mysqli_free_result($check_result);
         }
@@ -38,7 +41,9 @@ else {
 
             $sql_insert = "INSERT INTO carts (userID,artworkID) VALUES ($userID,$artworkID)";
             $result = mysqli_query($conn, $sql_insert);
+            echo mysqli_error($conn);
            // echo mysqli_error($conn);
+
 
                 echo "success";
 

@@ -31,8 +31,8 @@ include '../php/browse_history.php';
 
 <div class="search-bar">
     <form>
-        <input type="text" placeholder="请输入您要搜索的内容...">
-        <a href="search.php"><i class="fa fa-search"></i>搜索</a>
+        <input type="text" placeholder="   请输入关键词" name="keyword"  id="keyword">
+        <a   class="search_btn"><i class="fa fa-search"></i>搜索</a>
     </form>
 </div>
 
@@ -43,7 +43,7 @@ include '../php/browse_history.php';
 
             <?php
             include '../php/conn.php';
-            $sql_select = "SELECT * FROM artworks ORDER BY view LIMIT 4";
+            $sql_select = "SELECT * FROM artworks ORDER BY view DESC LIMIT 4 ";
             $result = mysqli_query($conn,$sql_select);
 
             while($row = mysqli_fetch_array($result)){
@@ -68,7 +68,7 @@ include '../php/browse_history.php';
     <h3 style="color:cornsilk">最新发布</h3>
     <div class="container" style="color:white">
 <?php
-      $sql_select = "SELECT * FROM artworks ORDER BY timeReleased LIMIT 3";
+      $sql_select = "SELECT * FROM artworks ORDER BY timeReleased DESC LIMIT 3";
       $result = mysqli_query($conn,$sql_select);
 
       while($row = mysqli_fetch_array($result)) {
@@ -141,6 +141,8 @@ include '../php/browse_history.php';
 
 <script>console.log(document.cookie);</script>
 <script>
+
+
     //商品链接点击事件
     $('.result_link').click(function() {
         var artworkID = $(this).data('artworkid');

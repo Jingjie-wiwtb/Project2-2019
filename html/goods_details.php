@@ -29,6 +29,12 @@ include '../php/browse_history.php';
 history_display($_COOKIE['history']);
 ?>
 
+<div class="search-bar">
+    <form>
+        <input type="text" placeholder="   请输入关键词" name="keyword"  id="keyword">
+        <a   class="search_btn"><i class="fa fa-search"></i>搜索</a>
+    </form>
+</div>
 
 
 <!--  -------------------------Goods-container----------->
@@ -160,17 +166,21 @@ include '../php/loginout_function.php';
             let artist = data.artist;
             let view = data.view;
             let orderID = data.orderID;
+            let imageFileName = data.imageFileName;
 
-            $('.goods-container').html(detail_display(title,artworkID,description,price,yearOfWork,genre,artist,view,orderID));
+            console.log(imageFileName);
+
+
+            $('.goods-container').html(detail_display(title,artworkID,description,price,yearOfWork,genre,artist,view,orderID,imageFileName));
 
         }
     });
 
 
-    function detail_display(title,artworkID,description,price,yearOfWork,genre,artist,view,orderID){
+    function detail_display(title,artworkID,description,price,yearOfWork,genre,artist,view,orderID,imageFileName){
         var display = "";
         display ='<div class="goods-name"><h2>'+title+'</h2></div>';
-        display+='<div class="details-img"><img src="../resources/img/'+artworkID+'.jpg"></div>';
+        display+='<div class="details-img"><img src="../resources/img/'+imageFileName+'"></div>';
         display+='<div><div class="goods-dscp"><h4>商品简介:</h4><p>'+description+'</p></div>';
         display+='<div class="price"><h4>商品价格：'+price+'</h4> </div>';
 
@@ -192,27 +202,6 @@ include '../php/loginout_function.php';
     }
 
 
-
-    $('.addcart').click(function()
-    {
-        console.log("addcart clicked!");
-        var artworkID = $(this).data('artworkid');
-
-       //
-        $.ajax({
-            type:"GET",
-            async:false,   //同步   默认是true（异步）
-            url:"../php/addcart.php",
-            data:{
-                artworkID:artworkID
-            },
-            dataType:"TEXT",
-            success:function(data){
-
-                alert('添加成功！');
-            }
-        });
-    });
 
 
 </script>

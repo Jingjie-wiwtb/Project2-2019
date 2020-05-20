@@ -76,8 +76,8 @@ history_display($history);
 
 
 <div class="result_container" >
-    <div class="null_result" style="color:cornsilk;text-align:center;height:50px;margin:30px auto;display:none" ><span>搜索结果为空</span></div>
-    <ul class="searchResult_list">
+    <div id="null_result" style="color:cornsilk;text-align:center;height:50px;margin:30px auto;display:none" ><span>搜索结果为空</span></div>
+    <ul class="searchResult_list" style = "display:block">
 	<!--
     <li>
         <div class="resultCard">
@@ -188,11 +188,11 @@ include '../php/loginout_function.php';
 
 
 <script>
-    /*      window.onload = function(){
+        window.onload = function(){
               var keyword = window.location.search.split("=")[1];
 
           };
-*/
+
     //获取搜索结果排序方式
  /*   $("#order_key").change(function(){
         var	order_key = $('input[name=order_key]:checked').val();
@@ -261,7 +261,7 @@ function setOrder_key(){
                 {
                     if(i<=totalPage) {
                         if(i == page)
-                            flickr += '<li><a class="flickr_list active">'+i+'</a></li>';  //打印当前页数时+‘active'类
+                            flickr += '<li><a class="flickr_list current">'+i+'</a></li>';  //打印当前页数时+‘active'类
                         else
                             flickr += '<li><a class="flickr_list">'+i+'</a></li>';
                     }
@@ -297,7 +297,7 @@ function setOrder_key(){
 
 
     //分页搜索结果显示函数
-    function search_display(keyword,order_key,search_key)
+    function search_display(keyword,order_key,search_key,page)
     {
 
         console.log("search_display!");
@@ -319,9 +319,11 @@ function setOrder_key(){
                     alert("请输入关键词！");
                 }
                 else if (data==0){
-                    document.getElementsByClassName('null_result').style.display="block";
+                    document.getElementById("null_result").style.display="block";
+                    $('.searchResult_list').html("");
                 }
                 else {
+                    document.getElementById("null_result").style.display="none";
                     console.log(typeof (data));
                     console.log(data);
                     var obj = JSON.parse(data);
@@ -352,7 +354,17 @@ function setOrder_key(){
 
 //排序方式、关键词、搜索字段的赋值
 
-    var	keyword = $('input[name=keyword]').val();
+        var keyword = window.location.search.split("=")[1];
+
+    if(keyword){
+        $('input[name=keyword]').val(keyword);
+    }
+    else{
+        var	keyword = $('input[name=keyword]').val();
+    }
+
+
+
 
     console.log("keyword"+keyword);
     var	order_key = $('input[name=order_key]:checked').val();
@@ -370,67 +382,41 @@ function setOrder_key(){
 
     console.log("search_key"+search_key);
     var page = 1;
-    search_loadflickr(keyword,order_key,search_key);
-    search_display(keyword,order_key,search_key);
+    search_loadflickr(keyword,order_key,search_key,page);
+    search_display(keyword,order_key,search_key,page);
 
 //};
 
 
 
     //上一页点击事件
-    $(".pre-page").click(function()
-    {
-
+  $(document).on('click','.pre-page',function() {
+      var	order_key = $('input[name=order_key]:checked').val();
+      console.log("order_key"+order_key);
+      var search_key="";
+      test= document.getElementsByName("search_key");
+      console.log(typeof(test));
+      for(let k in test){
+          console.log(k);
+          if (test[k].checked)
+              search_key+=test[k].value+",";
+      }
+      var	keyword = $('input[name=keyword]').val();
         console.log("pre-page:sucess");
         if(page>1)
             page = parseInt(page)-1;
         else
             page=1;
 
-        search_loadflickr(keyword,order_key,search_key);
-        search_display(keyword,order_key,search_key);
+        search_loadflickr(keyword,order_key,search_key,page);
+        search_display(keyword,order_key,search_key,page);
 
     });
 
     //下一页点击事件
-    $(".next-page").click(function()
-    {
-
-        if(page<totalPage)
-            page = parseInt(page)+1;   //如果是最后一页则不变
-
-        search_loadflickr(keyword,order_key,search_key);
-        search_display(keyword,order_key,search_key);
-    });
-
-
-//商品链接点击事件
-    $('.result_link').click(function() {
-        console.log("click success!");
-		var artworkID = $(this).data('artworkid');     //id被自动转化为小写了。。。
-		console.log(artworkID);
-		window.location.href = "goods_details.php?artworkID="+artworkID;
-
-		});		
-
-
-
-
-
-
-//页数列表的点击事件
-$(".flickr_list").click(function(){
-
-    console.log("flickr_list:success");
-	var page = $(this).text();   //把列表内容（即页数）传给page
-	console.log("getpage:"+page);
-	search_loadflickr(keyword,order_key,search_key);
-	
-	search_display(keyword,order_key,search_key);
-    });
-
-//搜索方式点击事件
-    $("#search_key").change(function(){
+    $(document).on('click','.next-page',function() {
+        var	order_key = $('input[name=order_key]:checked').val();
+        console.log("order_key"+order_key);
         var search_key="";
         test= document.getElementsByName("search_key");
         console.log(typeof(test));
@@ -439,18 +425,69 @@ $(".flickr_list").click(function(){
             if (test[k].checked)
                 search_key+=test[k].value+",";
         }
+        var	keyword = $('input[name=keyword]').val();
+        if(page<totalPage)
+            page = parseInt(page)+1;   //如果是最后一页则不变
+
+        search_loadflickr(keyword,order_key,search_key,page);
+        search_display(keyword,order_key,search_key,page);
+    });
 
 
-        $.ajax({
-            type:"GET",
-            async:false,   //同步   默认是true（异步）
-            url:"../php/search_display.php",
-            data:{search_key:search_key},
-            dataType:"TEXT",
-            success:function(data){
-                search_key:search_key
-            }
-        });
+
+
+
+//页数列表的点击事件
+$(document).on('click','.flickr_list',function() {
+    var	order_key = $('input[name=order_key]:checked').val();
+    console.log("order_key"+order_key);
+    var search_key="";
+    test= document.getElementsByName("search_key");
+    console.log(typeof(test));
+    for(let k in test){
+        console.log(k);
+        if (test[k].checked)
+            search_key+=test[k].value+",";
+    }
+    var	keyword = $('input[name=keyword]').val();
+    console.log("flickr_list:success");
+    page = $(this).html();   //把列表内容（即页数）传给page
+	console.log("getpage:"+page);
+	search_loadflickr(keyword,order_key,search_key,page);
+	
+	search_display(keyword,order_key,search_key,page);
+
+    });
+
+
+    //商品链接点击事件
+    $('.result_link').click(function() {
+        console.log("click success!");
+        var artworkID = $(this).data('artworkid');     //id被自动转化为小写了。。。
+        console.log(artworkID);
+        window.location.href = "goods_details.php?artworkID="+artworkID;
+
+    });
+
+
+
+
+
+
+
+    //搜索方式点击事件
+    $("#search_key").change(function(){
+        var	keyword = $('input[name=keyword]').val();
+        var search_key="";
+        test= document.getElementsByName("search_key");
+        console.log(typeof(test));
+        for(let k in test){
+            console.log(k);
+            if (test[k].checked)
+                search_key+=test[k].value+",";
+        }
+        console.log("getsearch_key:"+search_key);
+        console.log(keyword+"in keychange");
 
         search_loadflickr(keyword,order_key,search_key);
         search_display(keyword,order_key,search_key);
@@ -460,23 +497,13 @@ $(".flickr_list").click(function(){
 
 //排序方式点击事件
 $("#order_key").change(function(){
+
     var	keyword = $('input[name=keyword]').val();
     console.log("order_key:success");
     var order_key = $('input[name=order_key]:checked').val();
    // var order_key = document.getElementById("order_key").value;
     console.log("order_key:"+order_key);
 
-
-	$.ajax({
-			type:"GET",
-			async:false,   //同步   默认是true（异步）
-			url:"../php/search_display.php",			
-			data:{order_key:order_key},
-			dataType:"TEXT",
-			success:function(data){
-			    order_key:order_key
-			}
-		});
 	
 	search_loadflickr(keyword,order_key,search_key);
 	search_display(keyword,order_key,search_key);
@@ -503,6 +530,53 @@ $("#order_key").change(function(){
 		search_loadflickr(keyword,order_key,search_key);
 		search_display(keyword,order_key,search_key);
 	});
+
+/*
+    //“加入购物车”点击事件
+    $('.addcart').click(function()
+    {
+
+        var artworkID = $(this).data('artworkid');
+        console.log("artworkID:" + artworkID);
+
+        //把artworkID传到addcart.php
+        $.ajax({
+            type: "GET",
+            async: false,   //同步   默认是true（异步）
+            url: "../php/addcart.php",
+            data: {
+                artworkID: artworkID
+            },
+            dataType: "TEXT",
+            success: function (data) {
+                console.log(data);
+                if (data=="success") {
+                    console.log("success")
+                    alert("添加成功！");
+                }
+                if(data=="notlogin"){
+                    alert("请先登录！");
+                }
+                if(data=="added") {
+                    alert("您已添加该商品！");
+                }
+
+                if(data=="bought"){
+                    alert("已经被人买走啦！");
+                }
+
+            }
+        });
+
+    });
+
+
+  //  live()写法
+    $('.addcart').live('click', function() {
+        //function code here.
+*/
+
+
 
 </script>
 

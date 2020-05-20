@@ -10,10 +10,12 @@ $search_key = rtrim($search_key, ",");    //去掉字符串末端的任意字符
 
 include 'conn.php';
 
+
+
 if(!$keyword)
     echo '0';
 else {
-    $sql_select = "SELECT * FROM artworks WHERE CONCAT($search_key) LIKE '%$keyword%' AND orderID IS NOT NULL";//= '$keyword'";//
+    $sql_select = "SELECT * FROM artworks WHERE CONCAT($search_key) LIKE '%$keyword%' AND orderID IS NULL";//= '$keyword'";//
 
     /*
 
@@ -24,14 +26,24 @@ else {
 //echo $sql_select;
     $result = mysqli_query($conn, $sql_select);
 
-    $row = mysqli_fetch_array($result);
+ //  $row = mysqli_fetch_array($result);
+
+ //  var_dump($row);
 
     //  var_dump($result);
 
     // echo mysqli_error($conn);
+//    while($row = mysqli_fetch_array($result)){
 
-    if ($result)
+  //  }
+
+
+
+    if ($result) {
+        //如果有搜索结果
         $totalCount = $result->num_rows;
+    //    echo "totalcount:".$totalCount;
+    }
     else
         $totalCount = 0;
 

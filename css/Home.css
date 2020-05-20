@@ -75,7 +75,12 @@ ul {
     display:block;
 }
 
-
+#add_work div{
+    margin:30px;
+}
+#add_work title{
+    color: #F9F0DA;
+}
 
 #logout_change{
     display:none;

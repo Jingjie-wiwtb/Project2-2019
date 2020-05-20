@@ -1,6 +1,17 @@
 <?php
 $current_history = "add_work";  //添加商品
 include '../php/browse_history.php';
+
+
+
+
+
+$info_change = array()
+
+
+
+
+
 ?>
 
     <!DOCTYPE html>
@@ -16,13 +27,12 @@ include '../php/browse_history.php';
     <link href="../css/Home.css" rel="stylesheet" type="text/css" />
 
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-
-    <script src="../javascript/jquery.cookie.js"></script>
     <script src="../javascript/jquery-3.4.1.js"></script>
-    <!-- <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>   -->
-    <script src="../javascript/main.js" type="text/javascript" defer="defer"></script>
-    <script src="../javascript/search.js" type="text/javascript" defer="defer"></script>
-
+    <style>
+        #add_work label {
+            color: cornsilk;
+        }
+    </style>
 </head>
 
 <body>
@@ -35,35 +45,14 @@ include '../php/browse_history.php';
 history_display($history);
 ?>
 
-<div class="nav">      <!--导航栏-->
-    <img class="nav_background" src="../images/nav.jpg">
-    <img class="logo" src="../images/logo.png">
-    <ul>
-
-        <li><a href="cart.html">购物车</a></li>
-        <div id="login_change">
-            <li><a id="register_btn">注册</a></li>
-            <li><a id="login_btn" class="btn">登陆</a></li>
-        </div>
-        <div id="logout_change">
-            <li id="logout_btn"><a  onclick="logout()">登出</a></li>
-            <li><a href="personal_info.html">Jingjie</a></li>
-        </div>
-
-        <li> <a class="drop-btn" href="#分类">分类</a></li>
-        <li><a class="new.html" href="Home.html">主页</a></li>
-    </ul>
-</div>
-
-
 
       <div class="container">
             <h1 style="color:cornsilk">添加艺术品</h1>
-            <form style="color:cornsilk;fong-size:18px;padding:30px" action="../php/add_artwork.php" method="POST" onsubmit="return login_valid()">
+            <form id="add_work" style="fong-size:18px;padding:30px" action="../php/add_artwork.php" method="POST"  enctype="multipart/form-data" onsubmit="return login_valid()">
                 <input id="artworkID" name="artworkID" value="" style="display:none"/>
                 <div>
                     <label for="title">艺术品名称:</label>
-                    <input type="text" name="title" id="title"   onblur="checkartwork()">
+                    <input type="text" name="title" id="artwork"   onblur="checkartwork()">
 					<span class="default" id="errartwork"></span>
                 </div>				
 				<div>
@@ -74,7 +63,7 @@ history_display($history);
 				
 				<div>
                     <label for="description">简介</label>
-                    <input type="text" name="description" id="description"   onblur="checkdescription()">      
+                    <textarea  rows="10" cols="50" type="text" name="description" id="description"   onblur="checkdescription()"></textarea>
                     <span class="default" id="errdescription"></span> 
 				</div>
 				
@@ -102,16 +91,111 @@ history_display($history);
 				<div>
                     <label for="artimg">艺术品图片</label>     
                     <span class="default" id="errartimg"></span> 
-					
-                    <input type="file" name="artimg" id="artimg"  onchange="handleFiles(this.files);">
-                    <div id="preview"></div>
+
+
+                    <input type="file" name="artimg" onchange="PreviewImage(this,'imgHeadPhoto','divPreview');" size="20" />
+
+                    <div id="divPreview">
+                        <img id="imgHeadPhoto" src="" style="width: 500px; height: 500px; border: solid 1px #d2e2e2;"
+                             alt="" />
+                    </div>
 					
 				</div>
+                <input  class="submit btn" type="submit" value = "提交"></input>
 
+                <button type="button" class="btn btn-info cancel">取消</button></div>
 
-                <input  class="submit" type="submit" value = "提交"></input>
-            </form>
+</form>
         </div>
+
+
+
+
+
+
+<script type="text/javascript">
+
+
+
+    $(".cancel").click(function(){
+
+        if(confirm('确认放弃吗？'))
+             history.go(-1);
+
+    });
+
+
+
+
+    //图片预览
+
+
+    //js本地图片预览，兼容ie[6-9]、火狐、Chrome17+、Opera11+、Maxthon3
+    function PreviewImage(fileObj, imgPreviewId, divPreviewId) {
+        var allowExtention = ".jpg,.bmp,.gif,.png"; //允许上传文件的后缀名document.getElementById("hfAllowPicSuffix").value;
+        var extention = fileObj.value.substring(fileObj.value.lastIndexOf(".") + 1).toLowerCase();
+        var browserVersion = window.navigator.userAgent.toUpperCase();
+        if (allowExtention.indexOf(extention) > -1) {
+            if (fileObj.files) {//HTML5实现预览，兼容chrome、火狐7+等
+                if (window.FileReader) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        document.getElementById(imgPreviewId).setAttribute("src", e.target.result);
+                    }
+                    reader.readAsDataURL(fileObj.files[0]);
+                } else if (browserVersion.indexOf("SAFARI") > -1) {
+                    alert("不支持Safari6.0以下浏览器的图片预览!");
+                }
+            } else if (browserVersion.indexOf("MSIE") > -1) {
+                if (browserVersion.indexOf("MSIE 6") > -1) {//ie6
+                    document.getElementById(imgPreviewId).setAttribute("src", fileObj.value);
+                } else {//ie[7-9]
+                    fileObj.select();
+                    if (browserVersion.indexOf("MSIE 9") > -1)
+                        fileObj.blur(); //不加上document.selection.createRange().text在ie9会拒绝访问
+                    var newPreview = document.getElementById(divPreviewId + "New");
+                    if (newPreview == null) {
+                        newPreview = document.createElement("div");
+                        newPreview.setAttribute("id", divPreviewId + "New");
+                        newPreview.style.width = document.getElementById(imgPreviewId).width + "px";
+                        newPreview.style.height = document.getElementById(imgPreviewId).height + "px";
+                        newPreview.style.border = "solid 1px #d2e2e2";
+                    }
+                    newPreview.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale',src='" + document.selection.createRange().text + "')";
+                    var tempDivPreview = document.getElementById(divPreviewId);
+                    tempDivPreview.parentNode.insertBefore(newPreview, tempDivPreview);
+                    tempDivPreview.style.display = "none";
+                }
+            } else if (browserVersion.indexOf("FIREFOX") > -1) {//firefox
+                var firefoxVersion = parseFloat(browserVersion.toLowerCase().match(/firefox\/([\d.]+)/)[1]);
+                if (firefoxVersion < 7) {//firefox7以下版本
+                    document.getElementById(imgPreviewId).setAttribute("src", fileObj.files[0].getAsDataURL());
+                } else {//firefox7.0+
+                    document.getElementById(imgPreviewId).setAttribute("src", window.URL.createObjectURL(fileObj.files[0]));
+                }
+            } else {
+                document.getElementById(imgPreviewId).setAttribute("src", fileObj.value);
+            }
+        } else {
+            alert("仅支持" + allowExtention + "为后缀名的文件!");
+            fileObj.value = ""; //清空选中文件
+            if (browserVersion.indexOf("MSIE") > -1) {
+                fileObj.select();
+                document.selection.clear();
+            }
+            fileObj.outerHTML = fileObj.outerHTML;
+        }
+        return fileObj.value;    //返回路径
+    }
+</script>
+
+
+
+
+
+
+
+
 
 
 
@@ -154,6 +238,72 @@ history_display($history);
 
 
 
+<!-- <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>   -->
+<script src="../javascript/main.js" type="text/javascript" defer="defer"></script>
+<script src="../javascript/search.js" type="text/javascript" defer="defer"></script>
+
+
+
+//图片上传控制
+<script type="text/javascript">
+    //js本地图片预览，兼容ie[6-9]、火狐、Chrome17+、Opera11+、Maxthon3
+    function PreviewImage(fileObj, imgPreviewId, divPreviewId) {
+        var allowExtention = ".jpg,.bmp,.gif,.png"; //允许上传文件的后缀名document.getElementById("hfAllowPicSuffix").value;
+        var extention = fileObj.value.substring(fileObj.value.lastIndexOf(".") + 1).toLowerCase();
+        var browserVersion = window.navigator.userAgent.toUpperCase();
+        if (allowExtention.indexOf(extention) > -1) {
+            if (fileObj.files) {//HTML5实现预览，兼容chrome、火狐7+等
+                if (window.FileReader) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        document.getElementById(imgPreviewId).setAttribute("src", e.target.result);
+                    }
+                    reader.readAsDataURL(fileObj.files[0]);
+                } else if (browserVersion.indexOf("SAFARI") > -1) {
+                    alert("不支持Safari6.0以下浏览器的图片预览!");
+                }
+            } else if (browserVersion.indexOf("MSIE") > -1) {
+                if (browserVersion.indexOf("MSIE 6") > -1) {//ie6
+                    document.getElementById(imgPreviewId).setAttribute("src", fileObj.value);
+                } else {//ie[7-9]
+                    fileObj.select();
+                    if (browserVersion.indexOf("MSIE 9") > -1)
+                        fileObj.blur(); //不加上document.selection.createRange().text在ie9会拒绝访问
+                    var newPreview = document.getElementById(divPreviewId + "New");
+                    if (newPreview == null) {
+                        newPreview = document.createElement("div");
+                        newPreview.setAttribute("id", divPreviewId + "New");
+                        newPreview.style.width = document.getElementById(imgPreviewId).width + "px";
+                        newPreview.style.height = document.getElementById(imgPreviewId).height + "px";
+                        newPreview.style.border = "solid 1px #d2e2e2";
+                    }
+                    newPreview.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale',src='" + document.selection.createRange().text + "')";
+                    var tempDivPreview = document.getElementById(divPreviewId);
+                    tempDivPreview.parentNode.insertBefore(newPreview, tempDivPreview);
+                    tempDivPreview.style.display = "none";
+                }
+            } else if (browserVersion.indexOf("FIREFOX") > -1) {//firefox
+                var firefoxVersion = parseFloat(browserVersion.toLowerCase().match(/firefox\/([\d.]+)/)[1]);
+                if (firefoxVersion < 7) {//firefox7以下版本
+                    document.getElementById(imgPreviewId).setAttribute("src", fileObj.files[0].getAsDataURL());
+                } else {//firefox7.0+
+                    document.getElementById(imgPreviewId).setAttribute("src", window.URL.createObjectURL(fileObj.files[0]));
+                }
+            } else {
+                document.getElementById(imgPreviewId).setAttribute("src", fileObj.value);
+            }
+        } else {
+            alert("仅支持" + allowExtention + "为后缀名的文件!");
+            fileObj.value = ""; //清空选中文件
+            if (browserVersion.indexOf("MSIE") > -1) {
+                fileObj.select();
+                document.selection.clear();
+            }
+            fileObj.outerHTML = fileObj.outerHTML;
+        }
+        return fileObj.value;    //返回路径
+    }
+</script>
 
 
 <script>
@@ -161,9 +311,11 @@ history_display($history);
 
     var artworkID = window.location.search.substring(1).split("=")[1];
 
+    console.log(artworkID);
+
     if(artworkID){
-        $("input[name=artworkID]").value=artworkID;
-        console.log(artworkID);
+
+        $("#artworkID").val(artworkID);
         $.ajax({
             type:"GET",
             async:false,   //同步   默认是true（异步）
@@ -183,15 +335,15 @@ history_display($history);
                 let height = data.height;
                 let imageFileName = data.imageFileName;
 
-                $("#title").html(title);
-                $("#price").html(price);
-                $("#width").html(width);
-                $("#description").html(description);
-                $("#year").html(yearOfWork);
-                $("#genre").html(genre);
-                $("#artist").html(artist);
-                $("#height").html(height);
-                $("#preview").html('<img src="../resources/img/'+imageFileName+'">');
+                $("#artwork").val(title);
+                $("#price").val(price);
+                $("#width").val(width);
+                $("#description").val(description);
+                $("#year").val(yearOfWork);
+                $("#genre").val(genre);
+                $("#artist").val(artist);
+                $("#height").val(height);
+                $("#imgHeadPhoto").attr("src","../resources/img/"+imageFileName);
 
             }
         });
@@ -202,13 +354,17 @@ history_display($history);
 <?php
 
     include '../php/conn.php';
+if(!isset($_SESSION['username']))
+    echo "<script>alert('请先登陆！');history.go(-1);</script>";
 
-    $artworkID = $_GET['artworkID'];
+
+
+// $artworkID = $_GET['artworkID'];
     //   echo "artworkID:".$artworkID;
 
-    $sql_select = "SELECT * FROM artworks WHERE artworkID = $artworkID";
+   // $sql_select = "SELECT * FROM artworks WHERE artworkID = $artworkID";
 
-    $result = mysqli_query($conn,$sql_select);   //查找用户信息
+    //$result = mysqli_query($conn,$sql_select);   //查找用户信息
 
 ?>
 
@@ -270,8 +426,8 @@ history_display($history);
         }
 
         else {
-            errartwork.innerHTML = "✔";
-            errartwork.className = "success";
+            errartist.innerHTML = "✔";
+            errartist.className = "success";
             return true;
         }
     };
@@ -339,7 +495,7 @@ history_display($history);
         var height = document.getElementById('height');
         var errsize = document.getElementById('errsize');
 
-        var pattern = /^[1-9]\d*$ /;
+        var pattern = /^[1-9]\d*$/;
         if(width.value.length == 0 ||height.value.length == 0){
             errsize.innerHTML = "不得为空！";
             errsize.className="error";
@@ -383,8 +539,11 @@ history_display($history);
 
 
 </script>
+
+
+<?php
+include '../php/loginout_function.php';
+ob_end_flush();
+?>
 </html>
 
-
-
-<?php   ob_end_flush();?>

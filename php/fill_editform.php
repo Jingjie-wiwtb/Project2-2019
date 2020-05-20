@@ -21,7 +21,7 @@ if($row = mysqli_fetch_array($result)) {    //
 
     $work_info = array( 'imageFileName' => $row['imageFileName'], 'title' => $row['title'], 'artist' => $row['artist'], 'description' => $row['description'], 'price' => $row['price'],  'genre' => $row['genre'], 'yearOfWork' => $row['yearOfWork'],'height'=>$row['height'],'width'=>$row['width']);
 
-    echo json_encode($details);
+    echo json_encode($work_info);
 
 }
 

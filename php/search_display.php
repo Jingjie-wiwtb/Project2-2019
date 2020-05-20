@@ -4,9 +4,17 @@
 
 $keyword = $_GET['keyword'];    //神tm只能用单引号。。
 $order_key = $_GET['order_key'];
-$search_key = $_GET['search_key'];
-$search_key = rtrim($search_key, ",");    //去掉字符串末端的任意字符
 
+if(!isset($_GET['search_key'])){  //如果没设置搜索字段
+
+    $search_key = "artist,description,title";
+}
+else{
+
+    $search_key = $_GET['search_key'];
+    $search_key = rtrim($search_key, ",");    //去掉字符串末端的任意字符
+ //   echo "search_key:".$search_key;
+}
 //echo $keyword." ".$order_key." ".$search_key;
     include 'conn.php';
 	
@@ -19,7 +27,9 @@ if(!$keyword){//如果没设关键词
 }
 else {
 
-    $sql_select = "SELECT * FROM artworks WHERE CONCAT($search_key)  LIKE '%$keyword%' AND orderID IS NOT NULL";//= '$keyword'";//
+    $sql_select = "SELECT * FROM artworks WHERE CONCAT($search_key)  LIKE '%$keyword%' AND orderID IS NULL";//= '$keyword'";//
+  // echo "search_select".$sql_select;
+
     /*
         $key_split = explode(' ',$keyword); //分解用户输入的多个关键词，存入数组
         for($i=0;$i<count($key_split);$i++) {
@@ -48,12 +58,16 @@ else {
 //统计总条数
 
     if (!$totalCount = $result->num_rows)
+   // if(!$result)
         echo '0';           //无搜索结果
     //       echo "totalcount: ".$totalCount."  ";
 
     else //有搜索结果
     {
         $totalCount = $result->num_rows;
+
+    //    echo "totalCount:".$totalCount;
+
         $pageSize = 5;    //每个分页上的条目数
         $totalPage = ((int)($totalCount % $pageSize == 0)) ? ($totalCount / $pageSize) : 1;   //总页数
 

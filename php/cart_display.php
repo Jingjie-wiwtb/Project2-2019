@@ -1,9 +1,11 @@
 <?php
+
+
     	//单条购物车展示函数
     function cart_display($artworkID,$imageFileName,$title,$artist,$description,$price) {
 	
 	    $display = '<div class="cartCard" >';
-		$display.= '<a href="goods_details.php" class="result_link" data-artworkID="'.$artworkID.'"><img  src="../resources/img/'.$imageFileName.'"></a>';
+		$display.= '<a  class="result_link" data-artworkID="'.$artworkID.'"><img style="max-width:250px" src="../resources/img/'.$imageFileName.'"></a>';
 		$display.= '<div class="dscpt_container" >';
 		$display.= '<h3 class="art-name">名称  '.$title.'</h3>';
 		$display.= '<a class="author" >艺术家 '.$artist.'</a>';
@@ -41,7 +43,8 @@
 		   $totalPrice += $row['price'];
 		   
 		   $cartContent .= cart_display($row['artworkID'],$row['imageFileName'],$row['title'],$row['artist'],$row['description'],$row['price']);
-	    }	
+	    }
+	    $_SESSION['totalPrice']=$totalPrice;
 		
 	}
 
